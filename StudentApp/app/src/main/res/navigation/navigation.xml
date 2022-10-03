@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/QRCodeReader">
+    app:startDestination="@id/userLogin">
     <activity
-        android:id="@+id/QRCodeReader"
-        android:name="com.example.studentapp.QRCodeReader"
-        android:label="activity_qrcode_reader"
-        tools:layout="@layout/activity_qrcode_reader" />
+        android:id="@+id/userLogin"
+        android:name="com.example.studentapp.UserLogin"
+        android:label="user_login_activity"
+        tools:layout="@layout/user_login_activity" />
 </navigation>
