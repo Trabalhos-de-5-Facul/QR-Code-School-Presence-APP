@@ -1,6 +1,8 @@
 package com.example.studentapp
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -24,8 +26,9 @@ import java.net.URL
 const val EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE"
 
 class UserLogin : AppCompatActivity() {
-    private var responseHttp = ""
+    
 
+    private var responseHttp = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.user_login_activity)
