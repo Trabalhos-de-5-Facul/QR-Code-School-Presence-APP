@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
+    tools:context=".Menu">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/logout_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:gravity="center"
+        android:backgroundTint="#BE5504"
+        android:text="Enter"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/wellcome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:text="Log In"
+        android:textColor="@color/white"
+        android:textSize="35dp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="139dp" />
+
+    <!--  <EditText
+          android:id="@+id/username"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_margin="10dp"
+          android:background="@drawable/rounded_edittext"
+          android:drawableLeft="@drawable/ic_baseline_person_outline_24"
+          android:drawablePadding="10dp"
+          android:hint="Username"
+          android:padding="20dp"
+          android:textColor="@color/white"
+          android:textColorHint="@color/white"
+          tools:layout_editor_absoluteX="9dp"
+          tools:layout_editor_absoluteY="349dp" />
+
+      <EditText
+          android:id="@+id/password"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_margin="10dp"
+          android:background="@drawable/rounded_edittext"
+          android:drawableLeft="@drawable/ic_baseline_lock_open_24"
+          android:drawablePadding="10dp"
+          android:hint="Password"
+          android:inputType="textPassword"
+          android:padding="20dp"
+          android:textColor="@color/white"
+          android:textColorHint="@color/white"
+          tools:layout_editor_absoluteX="9dp"
+          tools:layout_editor_absoluteY="257dp" />
+
+      <com.google.android.material.button.MaterialButton
+          android:id="@+id/qr_btn"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerHorizontal="true"
+          android:backgroundTint="#BE5504"
+          android:text="Enter"
+          android:textSize="15dp"
+          tools:layout_editor_absoluteX="161dp"
+          tools:layout_editor_absoluteY="525dp" /> -->
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
