@@ -7,12 +7,6 @@
     android:background="@drawable/gradient_background"
     tools:context=".Menu">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/c"
-        />
-
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/logout_btn"
@@ -31,6 +25,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/info_class"
+        android:layout_width="400dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/rounded_edittext"
+        tools:layout_editor_absoluteX="5dp"
+        tools:layout_editor_absoluteY="238dp" />
+
     <TextView
         android:id="@+id/wellcome"
         android:layout_width="match_parent"
@@ -40,8 +43,18 @@
         android:textColor="@color/white"
         android:textSize="35dp"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="244dp" />
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="130dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/login_btn"
+        android:layout_width="56dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="#BE5504"
+        android:drawableEnd="@drawable/ic_baseline_qr_code_scanner_24"
+        tools:layout_editor_absoluteX="178dp"
+        tools:layout_editor_absoluteY="536dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
