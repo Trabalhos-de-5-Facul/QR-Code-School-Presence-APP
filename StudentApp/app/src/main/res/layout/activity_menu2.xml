@@ -23,6 +23,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+
     <TextView
         android:id="@+id/info_class"
         android:layout_width="400dp"
@@ -30,6 +32,8 @@
         android:layout_centerHorizontal="true"
         android:background="@drawable/rounded_edittext"
         android:text="Aula do Toba's"
+        android:textStyle="bold"
+        android:textColor="@color/white"
         android:textSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
