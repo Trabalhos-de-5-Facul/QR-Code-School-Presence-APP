@@ -31,7 +31,6 @@
         android:layout_height="200dp"
         android:layout_centerHorizontal="true"
         android:background="@drawable/rounded_edittext"
-        android:text="Aula do Toba's"
         android:textStyle="bold"
         android:textColor="@color/white"
         android:textSize="30dp"
