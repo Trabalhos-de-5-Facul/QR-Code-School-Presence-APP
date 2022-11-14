@@ -9,6 +9,7 @@ import android.preference.PreferenceManager
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import com.google.android.material.button.MaterialButton
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -90,12 +91,12 @@ class UserLogin : AppCompatActivity() {
                     val editor = preferences.edit();
                     editor.putString("LoginInfo",responseHttp);
                     editor.apply();
-                    val intent = Intent(this, UserLogin::class.java).apply {
+                    val intent = Intent(this, MenuProfessor::class.java).apply {
                         putExtra(EXTRA_MESSAGE, responseHttp)
                     }
                     startActivity(intent)
                 }else {
-
+                    Toast.makeText(this, "Invalid Login", Toast.LENGTH_SHORT).show()
                 }
             }
         }
