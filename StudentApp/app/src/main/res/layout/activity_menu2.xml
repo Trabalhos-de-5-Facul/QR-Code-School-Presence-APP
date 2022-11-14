@@ -13,7 +13,7 @@
         android:layout_width="60dp"
         android:layout_height="50dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginEnd="15dp"
+        android:layout_marginEnd="16dp"
         android:backgroundTint="#fa2100"
         android:gravity="center"
         app:icon="@drawable/ic_baseline_logout_24"
@@ -21,8 +21,8 @@
         app:iconPadding="50dp"
         app:layout_constraintBottom_toTopOf="@+id/wellcome"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.161" />
 
     <TextView
         android:id="@+id/info_class"
@@ -57,7 +57,7 @@
         tools:layout_editor_absoluteX="16dp" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/login_btn"
+        android:id="@+id/qrCodeBtn"
         android:layout_width="56dp"
         android:layout_height="50dp"
         android:layout_centerHorizontal="true"

@@ -9,8 +9,6 @@ import android.preference.PreferenceManager
 import android.util.Log
 import android.view.View
 import android.widget.TextView
-import com.example.studentapp.UserLogin.PreferenceHelper.customPreference
-import com.example.studentapp.UserLogin.PreferenceHelper.userId
 import com.google.android.material.button.MaterialButton
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -27,7 +25,7 @@ import org.json.JSONObject
 import java.lang.Thread.sleep
 import java.net.URL
 
-const val EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE"
+const val EXTRA_MESSAGE = "httpResponse"
 
 
 class UserLogin : AppCompatActivity() {
@@ -36,17 +34,21 @@ class UserLogin : AppCompatActivity() {
 
     private var responseHttp = ""
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        val prefs = customPreference(this, CUSTOM_PREF_NAME)
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.user_login_activity)
+
+        val preferences = getSharedPreferences ("PREFERENCE", MODE_PRIVATE);
+        val firstTime = preferences.getString("LoginInfo", "FirstTime");
+        if(!firstTime.equals("FirstTime")){
+            val intent = Intent(this, Menu::class.java).apply {
+                putExtra(EXTRA_MESSAGE, firstTime)
+            }
+            startActivity(intent)
+        }
 
         val username = findViewById<TextView>(R.id.username)
         val password = findViewById<TextView>(R.id.password)
         val loginBtn = findViewById<MaterialButton>(R.id.login_btn)
-
-
         //Admin Admin
 
         loginBtn.setOnClickListener {
@@ -60,51 +62,43 @@ class UserLogin : AppCompatActivity() {
             }
 
             do{
-                sleep(1000)
+                sleep(100)
             }while (responseHttp == "")
             val json = JSONObject(responseHttp)
             if(responseHttp != "{\"erro\":\"Email ou Senha incorretos.\"}"){
                 //correct
-
-                prefs.userId = usernameValue
-                val intent = Intent(this, QRCodeReader::class.java).apply {
+                val editor = preferences.edit();
+                editor.putString("LoginInfo",responseHttp);
+                editor.apply();
+                val intent = Intent(this, Menu::class.java).apply {
                     putExtra(EXTRA_MESSAGE, responseHttp)
                 }
                 startActivity(intent)
             }else{
-                //incorrect
+                responseHttp = ""
+                GlobalScope.async{
+                    getLoginResponse(
+                        "http://54.94.139.104:3000/professores/$passwordValue/$usernameValue"
+                    )
+                }
 
-            }
-        }
-    }
+                do{
+                    sleep(100)
+                }while (responseHttp == "")
+                if(responseHttp != "{\"erro\":\"Email ou Senha incorretos.\"}"){
+                    //correct
+                    val editor = preferences.edit();
+                    editor.putString("LoginInfo",responseHttp);
+                    editor.apply();
+                    val intent = Intent(this, UserLogin::class.java).apply {
+                        putExtra(EXTRA_MESSAGE, responseHttp)
+                    }
+                    startActivity(intent)
+                }else {
 
-    object PreferenceHelper {
-
-        val USER_ID = "USER_ID"
-
-        fun customPreference(context: Context, name: String): SharedPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE)
-
-        inline fun SharedPreferences.editMe(operation: (SharedPreferences.Editor) -> Unit) {
-            val editMe = edit()
-            operation(editMe)
-            editMe.apply()
-        }
-
-        var SharedPreferences.userId
-            get() = getString(USER_ID, "")
-            set(value) {
-                editMe {
-                    it.putString(USER_ID, value)
                 }
             }
-
-        var SharedPreferences.clearValues
-            get() = { }
-            set(value) {
-                editMe {
-                    it.clear()
-                }
-            }
+        }
     }
 
     private suspend fun getLoginResponse(httpString: String) {
