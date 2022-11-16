@@ -4,5 +4,84 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MenuProfessor">
+    android:background="@drawable/gradient_background"
+    tools:context=".Menu">
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/logout_btn"
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="#fa2100"
+        android:gravity="center"
+        app:icon="@drawable/ic_baseline_logout_24"
+        app:iconGravity="end"
+        app:iconPadding="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/wellcome"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.161" />
+
+    <TextView
+        android:id="@+id/info_class"
+        android:layout_width="400dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/rounded_edittext"
+        android:text="Aula do Tobar"
+        android:textColor="@color/white"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.499"
+        app:layout_editor_absoluteX="10dp"
+        app:layout_editor_absoluteY="10dp" />
+
+    <TextView
+        android:id="@+id/wellcome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Wellcome"
+        android:textColor="@color/white"
+        android:textSize="35dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/info_class"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/qrCodeBtn"
+        android:layout_width="56dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="#BE5504"
+        android:drawableEnd="@drawable/ic_baseline_qr_code_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.647"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/info_class" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/ListBtn"
+        android:layout_width="56dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="#BE5504"
+        android:drawableEnd="@drawable/ic_baseline_format_list_bulleted_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/qrCodeBtn"
+        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/info_class" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+
