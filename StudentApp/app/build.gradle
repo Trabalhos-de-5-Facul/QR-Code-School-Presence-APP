@@ -2,11 +2,18 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.7.10'
+    id 'kotlin-android-extensions'
 }
 
 android {
     namespace 'com.example.studentapp'
     compileSdk 32
+
+    viewBinding{
+
+        enabled = true
+
+    }
 
     defaultConfig {
         applicationId "com.example.studentapp"

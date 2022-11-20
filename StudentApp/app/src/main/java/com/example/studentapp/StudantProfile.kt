@@ -1,3 +1,3 @@
 package com.example.studentapp
 
-data class StudantProfile(var name : String, var ra : String)
+data class StudantProfile(var name : String)
