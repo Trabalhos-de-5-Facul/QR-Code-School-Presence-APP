@@ -41,10 +41,19 @@ class UserLogin : AppCompatActivity() {
         val preferences = getSharedPreferences ("PREFERENCE", MODE_PRIVATE);
         val firstTime = preferences.getString("LoginInfo", "FirstTime");
         if(!firstTime.equals("FirstTime")){
-            val intent = Intent(this, Menu::class.java).apply {
-                putExtra(EXTRA_MESSAGE, firstTime)
+            val json = JSONObject(firstTime);
+            if(json.has("cod")){
+                val intent = Intent(this, MenuProfessor::class.java).apply {
+                    putExtra(EXTRA_MESSAGE, firstTime)
+                }
+                startActivity(intent)
+            }else{
+                val intent = Intent(this, Menu::class.java).apply {
+                    putExtra(EXTRA_MESSAGE, firstTime)
+                }
+                startActivity(intent)
             }
-            startActivity(intent)
+
         }
 
         val username = findViewById<TextView>(R.id.username)
@@ -65,7 +74,6 @@ class UserLogin : AppCompatActivity() {
             do{
                 sleep(100)
             }while (responseHttp == "")
-            val json = JSONObject(responseHttp)
             if(responseHttp != "{\"erro\":\"Email ou Senha incorretos.\"}"){
                 //correct
                 val editor = preferences.edit();
