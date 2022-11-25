@@ -26,6 +26,7 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.util.*
 
+var foundBluetooth = false
 
 class QRCodeReader : AppCompatActivity() {
     private lateinit var codeScanner: CodeScanner
@@ -185,12 +186,14 @@ class QRCodeReader : AppCompatActivity() {
                     m_bluetoothSocket = device!!.createRfcommSocketToServiceRecord(m_myUUID)
                     BluetoothAdapter.getDefaultAdapter().cancelDiscovery()
                     m_bluetoothSocket?.connect()
-
+                    Toast.makeText(context, "Bluetooth devive not found", Toast.LENGTH_SHORT).show()
                 }
             }catch (e: IOException){
                 connectSucess = false
                 e.printStackTrace()
             }
+            if(connectSucess)
+                foundBluetooth = connectSucess
             return ""
         }
 

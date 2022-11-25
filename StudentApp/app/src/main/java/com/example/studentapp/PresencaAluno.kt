@@ -27,6 +27,7 @@ import org.json.JSONObject
 class PresencaAluno : AppCompatActivity() {
 
     private var presenceHttp = ""
+    private var makePresenceHttp = false
 
     data class Student(val name: String, val ra: Int, var presence : Boolean, val codAula: Int)
 
@@ -137,8 +138,12 @@ class PresencaAluno : AppCompatActivity() {
                 serializer = KotlinxSerializer()
             }
         }
-        val response: HttpResponse = client.get(httpString)
-        presenceHttp = response.bodyAsText()
-        client.close()
+        for (i in students.indices) {
+            var patchBody = "{\"presenca\"=1, \"ra_aluno\"="+students[i].ra.toString()+", \"cod_aula\"="+students[i].codAula.toString()+"}"
+            val response: HttpResponse = client.patch("http://54.94.139.104:3000/frequenta/")
+            presenceHttp = response.bodyAsText()
+            client.close()
+            makePresenceHttp=true
+        }
     }
 }
