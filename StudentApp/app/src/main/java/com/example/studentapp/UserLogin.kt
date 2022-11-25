@@ -27,6 +27,7 @@ import java.lang.Thread.sleep
 import java.net.URL
 
 const val EXTRA_MESSAGE = "httpResponse"
+const val EXTRA_SECOND_MESSAGE = "httpResponse"
 
 
 class UserLogin : AppCompatActivity() {

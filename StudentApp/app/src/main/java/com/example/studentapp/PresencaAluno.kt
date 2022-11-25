@@ -1,11 +1,16 @@
 package com.example.studentapp
 
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.BaseAdapter
 import android.widget.ListView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.studentapp.databinding.ActivityMainBinding
-import com.example.studentapp.databinding.ActivityPresencaAlunoBinding
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.json.*
@@ -15,21 +20,18 @@ import io.ktor.client.statement.*
 import kotlinx.android.synthetic.main.activity_presenca_aluno.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import org.json.JSONArray
 import org.json.JSONObject
 
 class PresencaAluno : AppCompatActivity() {
 
-
-    private lateinit var binding: ActivityPresencaAlunoBinding
-    private lateinit var userArrayList: ArrayList<StudantProfile>
     private var presenceHttp = ""
 
+    data class Student(val name: String, val ra: Int, var presence : Boolean, val codAula: Int)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityPresencaAlunoBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
+        setContentView(R.layout.activity_presenca_aluno)
         val httpResponse = intent.getStringExtra(EXTRA_MESSAGE)
         var json = JSONObject(httpResponse)
         presenceHttp = ""
@@ -45,36 +47,60 @@ class PresencaAluno : AppCompatActivity() {
         json = JSONObject(presenceHttp)
 
 
-        val names = arrayOf(
+        val mylistview = findViewById<ListView>(R.id.listview);
+        mylistview.adapter = StudentList(json, this);
+        mylistview.isClickable = true
 
-            "Anselmo",
-            "Bruno"
-        )
+        mylistview.setOnItemClickListener { parent, view, position, id ->
+            val student = (mylistview.getItemAtPosition(position) as Student)
+            if(student.presence) {
+                view.background = resources.getDrawable(R.drawable.rounded_edittext_lightblue)
+                student.presence = false;
+            }else {
+                view.background = resources.getDrawable(R.drawable.rounded_edittext_lightorange)
+                student.presence = true;
+            }
+        }
+    }
 
-        userArrayList = ArrayList()
+    private class StudentList(json: JSONObject, context: Context) : BaseAdapter() {
+        private val mContext : Context;
+        private val students : MutableList<Student> = mutableListOf()
 
-        for ( i in names.indices){
-
-            val user = StudantProfile(names[i])
-            userArrayList.add(user)
-
+        init{
+            mContext = context;
+            for (i in 0 until (json["quantidade"] as Int)) {
+                students.add(
+                    Student(
+                        ((json["alunos"] as JSONArray).get(i) as JSONObject)["nome_aluno"] as String,
+                        ((json["alunos"] as JSONArray).get(i) as JSONObject)["RA"] as Int,
+                        false,
+                        ((json["alunos"] as JSONArray).get(i) as JSONObject)["COD_AULA"] as Int
+                    ))
+            }
         }
 
-
-        binding.listview.isClickable = true
-        binding.listview.adapter = MyAdapter(this,userArrayList)
-        binding.listview.setOnItemClickListener { parent, view, position, id ->
-
-            val name = names[position]
-
-            val i = Intent(this, MainActivity::class.java)
-
-            i.putExtra("name",name)
-
-            startActivity(i)
-
+        override fun getItem(position: Int): Any {
+            return students[position];
         }
 
+        override fun getItemId(position: Int): Long {
+            return students[position].ra.toLong();
+        }
+
+        override fun getCount(): Int {
+            return students.size;
+        }
+
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+            val layoutInflater = LayoutInflater.from(mContext)
+            val rowMain = layoutInflater.inflate(R.layout.student_row, parent, false)
+            val nomeTextView = rowMain.findViewById<TextView>(R.id.nome)
+            nomeTextView.text = "Nome: "+ (getItem(position) as Student).name
+            val raTextView = rowMain.findViewById<TextView>(R.id.ra)
+            raTextView.text = "RA: " + (getItem(position) as Student).ra
+            return rowMain
+        }
     }
 
     private suspend fun getLoginResponse(httpString: String) {

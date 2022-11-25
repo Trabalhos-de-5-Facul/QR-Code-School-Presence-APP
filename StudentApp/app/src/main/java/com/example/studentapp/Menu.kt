@@ -23,6 +23,8 @@ class Menu : AppCompatActivity() {
         setContentView(R.layout.activity_menu2)
         val httpResponse = intent.getStringExtra(EXTRA_MESSAGE)
         var json = JSONObject(httpResponse)
+
+
         aulaResponse = ""
         GlobalScope.async{
             getLoginResponse(
@@ -41,7 +43,7 @@ class Menu : AppCompatActivity() {
 
         qrBtn.setOnClickListener{
             val intent = Intent(this, QRCodeReader::class.java).apply {
-                putExtra(EXTRA_MESSAGE, httpResponse)
+                putExtra(EXTRA_SECOND_MESSAGE, httpResponse)
             }
             startActivity(intent)
         }
