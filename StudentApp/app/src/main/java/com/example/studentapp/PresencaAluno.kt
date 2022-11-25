@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -48,8 +49,13 @@ class PresencaAluno : AppCompatActivity() {
 
 
         val mylistview = findViewById<ListView>(R.id.listview);
+        val btn = findViewById<Button>(R.id.btn);
         mylistview.adapter = StudentList(json, this);
         mylistview.isClickable = true
+
+        btn.setOnClickListener{
+
+        }
 
         mylistview.setOnItemClickListener { parent, view, position, id ->
             val student = (mylistview.getItemAtPosition(position) as Student)
@@ -84,6 +90,16 @@ class PresencaAluno : AppCompatActivity() {
             return students[position];
         }
 
+        fun getPresenceList(position: Int): List<Student> {
+            val presentStudents : MutableList<Student> = mutableListOf()
+            for (i in 0 until students.size) {
+                if(students[i].presence){
+                    presentStudents.add(students[i])
+                }
+            }
+            return presentStudents;
+        }
+
         override fun getItemId(position: Int): Long {
             return students[position].ra.toLong();
         }
@@ -104,6 +120,18 @@ class PresencaAluno : AppCompatActivity() {
     }
 
     private suspend fun getLoginResponse(httpString: String) {
+        val client = HttpClient(CIO) {
+            install(JsonPlugin) {
+                serializer = KotlinxSerializer()
+            }
+        }
+        val response: HttpResponse = client.get(httpString)
+        presenceHttp = response.bodyAsText()
+        client.close()
+    }
+
+    private suspend fun presenceResponse(students: List<Student>) {
+        var httpString = ""
         val client = HttpClient(CIO) {
             install(JsonPlugin) {
                 serializer = KotlinxSerializer()

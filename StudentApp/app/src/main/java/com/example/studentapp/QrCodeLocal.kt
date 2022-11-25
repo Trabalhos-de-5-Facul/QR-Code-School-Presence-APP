@@ -9,6 +9,5 @@ class QrCodeLocal : AppCompatActivity() {
         setContentView(R.layout.activity_qr_code_local)
 
         val httpResponse = intent.getStringExtra(EXTRA_MESSAGE)
-
     }
 }
