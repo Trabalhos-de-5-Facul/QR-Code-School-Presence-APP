@@ -21,13 +21,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.budiyev.android.codescanner.*
+import io.ktor.client.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.json.*
+import io.ktor.client.plugins.kotlinx.serializer.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import io.ktor.utils.io.errors.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import org.json.JSONObject
 import java.io.InputStream
 import java.io.OutputStream
 import java.util.*
 
 var foundBluetooth = false
-
+var makePresenceHttp = false
+var raAluno = 0
 class QRCodeReader : AppCompatActivity() {
     private lateinit var codeScanner: CodeScanner
     var m_bluetoothAdapter: BluetoothAdapter? = null
@@ -44,11 +54,27 @@ class QRCodeReader : AppCompatActivity() {
         var m_InputStream: InputStream? = null
     }
 
+    private suspend fun presenceResponse(ra: String, codAula: String) {
+        makePresenceHttp = false
+
+        val client = HttpClient(CIO) {
+            install(JsonPlugin) {
+                serializer = KotlinxSerializer()
+            }
+        }
+
+        var patchBody = "1/"+ra+"/"+codAula
+        val response: HttpResponse = client.get("http://54.94.139.104:3000/frequenta/$patchBody")
+        client.close()
+
+        makePresenceHttp=true
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_qrcode_reader)
         val httpResponse = intent.getStringExtra(EXTRA_MESSAGE)
-
+        raAluno = JSONObject(httpResponse)["ra"] as Int
         m_bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         if(m_bluetoothAdapter == null){
             Toast.makeText(this, "this device does not support bluetooth", Toast.LENGTH_SHORT).show()
@@ -87,7 +113,33 @@ class QRCodeReader : AppCompatActivity() {
         // Callbacks
         codeScanner.decodeCallback = DecodeCallback {
             runOnUiThread {
-                Toast.makeText(this, "Scan result: ${it.text}", Toast.LENGTH_LONG).show()
+                if(foundBluetooth){
+                    try {
+                        var json = JSONObject(it.text)
+
+                        GlobalScope.async {
+                            presenceResponse(
+                                raAluno.toString(),
+                                (json["COD_AULA"] as Int).toString()
+                            )
+                        }
+                        do{
+                            Thread.sleep(100)
+                        }while (!makePresenceHttp)
+                        Toast.makeText(this, "Chamada feito com sucesso", Toast.LENGTH_LONG).show()
+                        val intent = Intent(this, Menu::class.java).apply {
+                        }
+                        startActivity(intent)
+                    }catch (ex: Exception){
+                        Toast.makeText(this, "Invalid QRCode", Toast.LENGTH_LONG).show()
+                    }
+                }else {
+                    Toast.makeText(this, "Bluetooth device not found", Toast.LENGTH_LONG).show()
+                    val intent = Intent(this, Menu::class.java).apply {
+
+                    }
+                    startActivity(intent)
+                }
             }
         }
         codeScanner.errorCallback = ErrorCallback { // or ErrorCallback.SUPPRESS
@@ -186,7 +238,6 @@ class QRCodeReader : AppCompatActivity() {
                     m_bluetoothSocket = device!!.createRfcommSocketToServiceRecord(m_myUUID)
                     BluetoothAdapter.getDefaultAdapter().cancelDiscovery()
                     m_bluetoothSocket?.connect()
-                    Toast.makeText(context, "Bluetooth devive not found", Toast.LENGTH_SHORT).show()
                 }
             }catch (e: IOException){
                 connectSucess = false
