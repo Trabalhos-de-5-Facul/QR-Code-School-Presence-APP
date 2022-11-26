@@ -30,7 +30,7 @@
         android:layout_height="200dp"
         android:layout_centerHorizontal="true"
         android:background="@drawable/rounded_edittext_lightblue"
-        android:text="Aula do Tobar"
+        android:text="Não há aulas no momento"
         android:textColor="@color/white"
         android:textSize="30dp"
         android:textStyle="bold"
