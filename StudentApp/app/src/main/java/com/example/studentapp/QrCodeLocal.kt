@@ -92,24 +92,25 @@ class QrCodeLocal : AppCompatActivity() {
         var dimen = if (width < height) width else height
         dimen = dimen * 3 / 4
 
-        // on below line we are initializing our qr encoder
-        qrEncoder = QRGEncoder(QrHttp.toString(), null, QRGContents.Type.TEXT, dimen)
+            // on below line we are initializing our qr encoder
+            qrEncoder = QRGEncoder(QrHttp.toString(), null, QRGContents.Type.TEXT, dimen)
 
-        // on below line we are running a try
-        // and catch block for initialing our bitmap
-        try {
-            // on below line we are
-            // initializing our bitmap
-            bitmap = qrEncoder.getBitmap(0)
+            // on below line we are running a try
+            // and catch block for initialing our bitmap
 
-            // on below line we are setting
-            // this bitmap to our image view
-            qrIV.setImageBitmap(bitmap)
-        } catch (e: Exception) {
-            // on below line we
-            // are handling exception
-            e.printStackTrace()
-        }
+            try {
+                // on below line we are
+                // initializing our bitmap
+                bitmap = qrEncoder.getBitmap(0)
+
+                // on below line we are setting
+                // this bitmap to our image view
+                qrIV.setImageBitmap(bitmap)
+            } catch (e: Exception) {
+                // on below line we
+                // are handling exception
+                e.printStackTrace()
+            }
 
 
         // on below line we are adding on click

@@ -65,6 +65,8 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.github.androidmads:QRGenerator:1.0.1'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.cardview:cardview:1.0.0'
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-debug:1.4.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
