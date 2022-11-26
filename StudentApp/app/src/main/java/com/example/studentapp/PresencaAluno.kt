@@ -18,6 +18,9 @@ import io.ktor.client.plugins.json.*
 import io.ktor.client.plugins.kotlinx.serializer.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
+import io.ktor.content.*
+import io.ktor.http.*
+import io.ktor.util.*
 import kotlinx.android.synthetic.main.activity_presenca_aluno.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -55,7 +58,26 @@ class PresencaAluno : AppCompatActivity() {
         mylistview.isClickable = true
 
         btn.setOnClickListener{
+            makePresenceHttp = false
+            GlobalScope.async{
+                val presentStudents : MutableList<Student> = mutableListOf()
+                for (i in 0 until mylistview.count) {
+                    if((mylistview.getItemAtPosition(i) as Student).presence){
+                        presentStudents.add((mylistview.getItemAtPosition(i) as Student))
+                    }
+                }
 
+                presenceResponse(presentStudents)
+            }
+
+            do{
+                Thread.sleep(100)
+            }while (!makePresenceHttp)
+
+            val intent = Intent(this, MenuProfessor::class.java).apply {
+
+            }
+            startActivity(intent)
         }
 
         mylistview.setOnItemClickListener { parent, view, position, id ->
@@ -67,6 +89,7 @@ class PresencaAluno : AppCompatActivity() {
                 view.background = resources.getDrawable(R.drawable.rounded_edittext_lightorange)
                 student.presence = true;
             }
+
         }
     }
 
@@ -91,15 +114,7 @@ class PresencaAluno : AppCompatActivity() {
             return students[position];
         }
 
-        fun getPresenceList(position: Int): List<Student> {
-            val presentStudents : MutableList<Student> = mutableListOf()
-            for (i in 0 until students.size) {
-                if(students[i].presence){
-                    presentStudents.add(students[i])
-                }
-            }
-            return presentStudents;
-        }
+
 
         override fun getItemId(position: Int): Long {
             return students[position].ra.toLong();
@@ -131,19 +146,22 @@ class PresencaAluno : AppCompatActivity() {
         client.close()
     }
 
+    @OptIn(InternalAPI::class)
     private suspend fun presenceResponse(students: List<Student>) {
-        var httpString = ""
-        val client = HttpClient(CIO) {
-            install(JsonPlugin) {
-                serializer = KotlinxSerializer()
-            }
-        }
+        makePresenceHttp = false
+
         for (i in students.indices) {
-            var patchBody = "{\"presenca\"=1, \"ra_aluno\"="+students[i].ra.toString()+", \"cod_aula\"="+students[i].codAula.toString()+"}"
-            val response: HttpResponse = client.patch("http://54.94.139.104:3000/frequenta/")
-            presenceHttp = response.bodyAsText()
+            val client = HttpClient(CIO) {
+                install(JsonPlugin) {
+                    serializer = KotlinxSerializer()
+                }
+            }
+
+            var patchBody = "1/"+students[i].ra.toString()+"/"+students[i].codAula.toString()
+            val response: HttpResponse = client.get("http://54.94.139.104:3000/frequenta/$patchBody")
             client.close()
-            makePresenceHttp=true
+
         }
+        makePresenceHttp=true
     }
 }
