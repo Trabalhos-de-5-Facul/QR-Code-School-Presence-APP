@@ -55,6 +55,7 @@ class QrCodeLocal : AppCompatActivity() {
         GlobalScope.async{
             getQrCodeResponse(
                 "http://54.94.139.104:3000/professores/aula/"+json["cod"]
+
             )
         }
 
@@ -93,7 +94,7 @@ class QrCodeLocal : AppCompatActivity() {
         dimen = dimen * 3 / 4
 
             // on below line we are initializing our qr encoder
-            qrEncoder = QRGEncoder(QrHttp.toString(), null, QRGContents.Type.TEXT, dimen)
+            qrEncoder = QRGEncoder((((json["aula"] as JSONArray).get(0).toString())), null, QRGContents.Type.TEXT, dimen)
 
             // on below line we are running a try
             // and catch block for initialing our bitmap
