@@ -73,7 +73,22 @@ class Menu : AppCompatActivity() {
             recyclerView.layoutManager = LinearLayoutManager(this)
             recyclerView.adapter = MyAdapter
 
-            qrBtn.isClickable = true
+            aulaResponse = ""
+            GlobalScope.async{
+                getLoginResponse(
+                    "http://54.94.139.104:3000/frequenta/aula/"+raAluno+"/"+(((json["aula"] as JSONArray).get(0) as JSONObject)["COD_AULA"].toString())
+                )
+            }
+
+            do{
+                Thread.sleep(100)
+            }while (aulaResponse == "")
+
+            json = JSONObject(aulaResponse);
+
+            qrBtn.isEnabled = (((json["frequencia"] as JSONArray).get(0) as JSONObject)["presenca_aluno"] as Number) == 0
+            qrBtn.isClickable = (((json["frequencia"] as JSONArray).get(0) as JSONObject)["presenca_aluno"] as Number) == 0
+
         }
         else{
             arrayList.add(Model("Não há aulas no momento :)"))
@@ -83,6 +98,7 @@ class Menu : AppCompatActivity() {
             recyclerView.layoutManager = LinearLayoutManager(this)
             recyclerView.adapter = MyAdapter
 
+            qrBtn.isEnabled = false
             qrBtn.isClickable = false
 
         }

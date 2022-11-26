@@ -73,7 +73,9 @@ class MenuProfessor : AppCompatActivity() {
             recyclerView.adapter = MyAdapter
 
             qrCodeBtn.isClickable = true
+            qrCodeBtn.isEnabled = true
             listBtn.isClickable = true
+            listBtn.isEnabled = true
         }
         else{
             arrayList.add(Model("Não há aulas no momento :("))
@@ -84,7 +86,9 @@ class MenuProfessor : AppCompatActivity() {
             recyclerView.adapter = MyAdapter
 
             qrCodeBtn.isClickable = false
+            qrCodeBtn.isEnabled = false
             listBtn.isClickable = false
+            listBtn.isEnabled = false
         }
 
 
