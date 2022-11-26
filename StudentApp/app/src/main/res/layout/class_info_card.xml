@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:background="#3a568a"
+        android:background="#2a4063"
         >
 
         <ImageView
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/titleTv"
-            android:text="Title"
+            android:text="Não há aulas no momento :("
             android:textSize="22sp"
             android:textStyle="bold"
             android:textColor="@color/white"
